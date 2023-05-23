@@ -15,9 +15,6 @@ class DioClient {
     Map<String, String> headerMap = {
       'Content-Type': 'application/json; charset=UTF-8'
     };
-    if (token!.isNotEmpty) {
-      headerMap.addAll({'Authorization': 'Token $token'});
-    }
 
     dio!
       ..options.baseUrl = baseUrl!

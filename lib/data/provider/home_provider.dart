@@ -15,6 +15,7 @@ class HomeProvider with ChangeNotifier {
   List<PostModel> postModelList = [];
 
   getAllPosts() async {
+    postModelList.clear();
     isLoading = true;
     notifyListeners();
     ApiResponse response = await homeRepository.getAllPosts();
@@ -24,7 +25,6 @@ class HomeProvider with ChangeNotifier {
       response.response.data.forEach((element) {
         postModelList.add(PostModel.fromJson(element));
       });
-      notifyListeners();
     } else {
       Fluttertoast.showToast(msg: response.response.statusMessage!);
     }

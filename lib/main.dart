@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:wordpress_mobile/data/provider/home_provider.dart';
-import 'package:wordpress_mobile/module/screen/home_page.dart';
+import 'package:wordpress_mobile/module/screen/BottomNavBar.dart';
 import 'package:wordpress_mobile/module/splash/splash_provider.dart';
 
 import 'di_container.dart' as di;
 
 void main() async {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarBrightness: Brightness.light));
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
   runApp(MultiProvider(
@@ -30,7 +32,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: BottomNavBar(0),
     );
   }
 }

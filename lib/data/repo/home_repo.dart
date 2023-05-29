@@ -19,4 +19,14 @@ class HomeRepository {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e), response);
     }
   }
+
+  Future<ApiResponse> getAllCategories() async {
+    Response response = Response(requestOptions: RequestOptions(path: '22222'));
+    try {
+      response = await dioClient.get(AppConstant.baseUrl + AppConstant.categoriesUrl);
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e), response);
+    }
+  }
 }

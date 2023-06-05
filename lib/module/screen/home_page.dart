@@ -102,7 +102,13 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     height: 24,
                   ),
-                  Stack(
+                  homeProvider.isLoading?
+                      const SizedBox(
+                        height: 250,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ):Stack(
                     children: [
                       Container(
                         height: 250,
@@ -141,9 +147,9 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   Expanded(
                                       child: Text(
-                                    "M Tarek",
-                                    style: TextStyle(fontSize: 15, color: kLightColor),
-                                  )),
+                                        "M Tarek",
+                                        style: TextStyle(fontSize: 15, color: kLightColor),
+                                      )),
                                   Text("10 May 2023", style: TextStyle(fontSize: 15, color: kLightColor)),
                                   SizedBox(
                                     height: 24.0,

@@ -52,7 +52,8 @@ class _ArticlePageState extends State<ArticlePage> {
                             ),
                           ),
                         )
-                      : ListView.builder(
+                      : ListView.separated(
+                    separatorBuilder: (_,index)=> SizedBox(height: 10),
                           padding: EdgeInsets.all(10),
                           itemCount: homeProvider.postModelList.length,
                           itemBuilder: (_, index) {

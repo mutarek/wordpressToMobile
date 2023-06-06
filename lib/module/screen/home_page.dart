@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    Provider.of<HomeProvider>(context, listen: false).getAllPosts();
+    Provider.of<HomeProvider>(context, listen: false).getAllPosts(true);
     Provider.of<HomeProvider>(context, listen: false).getAllCategories();
     return Consumer<HomeProvider>(builder: (context, homeProvider, child) {
       return Scaffold(
@@ -34,8 +35,8 @@ class _HomePageState extends State<HomePage> {
                       CircleAvatar(
                         radius: 15,
                         backgroundColor: kHomeBgColor,
-                        backgroundImage: NetworkImage(
-                          "https://cimages1.touristlink.com/data/cache/member/218021/tarek_edit_5701_200_0.jpg",
+                        backgroundImage: AssetImage(
+                          "assets/icons/mutarek.jpg",
                         ),
                       ),
                       SizedBox(
@@ -49,8 +50,8 @@ class _HomePageState extends State<HomePage> {
                       CircleAvatar(
                         radius: 15,
                         backgroundColor: kHomeBgColor,
-                        backgroundImage: NetworkImage(
-                          "https://cimages1.touristlink.com/data/cache/member/218021/tarek_edit_5701_200_0.jpg",
+                        backgroundImage: AssetImage(
+                          "assets/icons/mutarek.jpg",
                         ),
                       ),
                     ],
@@ -78,13 +79,13 @@ class _HomePageState extends State<HomePage> {
                                   child: Column(
                                     children: [
                                       Chip(
-                                        backgroundColor: homeProvider.selectedIndex == index ? Colors.green : kHomeBgColor,
+                                        backgroundColor: homeProvider.selectedIndex == index ? Colors.green : Colors.white,
                                         label: Text(
                                           homeProvider.blogTypes[index],
                                           style: TextStyle(
                                               fontSize: 15.0,
                                               fontWeight: homeProvider.selectedIndex == index ? FontWeight.bold : FontWeight.normal,
-                                              color: homeProvider.selectedIndex == index ? kLightColor : kLightColor.withOpacity(0.04)),
+                                              color: homeProvider.selectedIndex == index ? kLightColor : Colors.black),
                                         ),
                                       ),
                                       Container(
@@ -102,66 +103,69 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     height: 24,
                   ),
-                  homeProvider.isLoading?
-                      const SizedBox(
-                        height: 250,
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      ):Stack(
-                    children: [
-                      Container(
-                        height: 250,
-                        width: width,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(24),
-                            image: DecorationImage(image: AssetImage("assets/icons/rajshahi.jpg"), fit: BoxFit.cover)),
-                      ),
-                      Positioned(
-                        bottom: 0.0,
-                        left: 0.0,
-                        right: 0.0,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "How to Work on Your Dream",
-                                style: TextStyle(fontSize: 20, color: kLightColor, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CircleAvatar(
-                                    radius: 15,
-                                    child: Image.asset(
-                                      "assets/icons/homeIcon.png",
-                                      height: 40,
-                                      width: 40,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(
-                                      child: Text(
-                                        "M Tarek",
-                                        style: TextStyle(fontSize: 15, color: kLightColor),
-                                      )),
-                                  Text("10 May 2023", style: TextStyle(fontSize: 15, color: kLightColor)),
-                                  SizedBox(
-                                    height: 24.0,
-                                  )
-                                ],
-                              )
-                            ],
+                  homeProvider.isLoading
+                      ? const SizedBox(
+                          height: 250,
+                          child: Center(
+                            child: CircularProgressIndicator(),
                           ),
+                        )
+                      : Stack(
+                          children: [
+                            Container(
+                              height: 250,
+                              width: width,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(24),
+                                  image: DecorationImage(
+                                      image: CachedNetworkImageProvider(homeProvider.postModelList[0].yoast_head_json!.ogImage[0].url),
+                                      fit: BoxFit.cover)),
+                            ),
+                            Positioned(
+                              bottom: 0.0,
+                              left: 0.0,
+                              right: 0.0,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      homeProvider.postModelList[0].title!.rendered.toString(),
+                                      style: TextStyle(fontSize: 20, color: kLightColor, fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 15,
+                                          child: Image.asset(
+                                            "assets/icons/mutarek.jpg",
+                                            height: 40,
+                                            width: 40,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Expanded(
+                                            child: Text(
+                                          homeProvider.postModelList[0].yoast_head_json!.author,
+                                          style: TextStyle(fontSize: 15, color: kLightColor),
+                                        )),
+                                        Text("10 May 2023", style: TextStyle(fontSize: 15, color: kLightColor)),
+                                        SizedBox(
+                                          height: 24.0,
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
                   SizedBox(
                     height: 22,
                   ),
@@ -190,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                               var data = homeProvider.categoryList[index];
                               return GestureDetector(
                                 onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (builder) => ArticlePage()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (builder) => ArticlePage(data.id)));
                                 },
                                 child: Container(
                                   height: 162,

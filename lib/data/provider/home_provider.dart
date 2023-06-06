@@ -15,11 +15,16 @@ class HomeProvider with ChangeNotifier {
 
   List<PostModel> postModelList = [];
 
-  getAllPosts() async {
+  getAllPosts(bool isForAllPost, {int categoryCode = 113}) async {
+    ApiResponse response;
     postModelList.clear();
     isLoading = true;
     notifyListeners();
-    ApiResponse response = await homeRepository.getAllPosts();
+    if (isForAllPost) {
+      response = await homeRepository.getAllPosts();
+    } else {
+      response = await homeRepository.getAllPostsByCategory(categoryCode);
+    }
     isLoading = false;
     notifyListeners();
     if (response.response.statusCode == 200) {
@@ -40,10 +45,12 @@ class HomeProvider with ChangeNotifier {
   }
 
   List<CategoryModel> categoryList = [];
+
   getAllCategories() async {
     categoryList.clear();
     isLoading = true;
     notifyListeners();
+
     ApiResponse response = await homeRepository.getAllCategories();
     isLoading = false;
     notifyListeners();

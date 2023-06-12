@@ -29,31 +29,34 @@ class _DetailsScreenState extends State<DetailsScreen> {
               Stack(
                 children: [
                   Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15)
-                      ),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
                       height: 200,
                       width: double.infinity,
                       child: CachedNetworkImage(
                         imageUrl: widget.image,
                         fit: BoxFit.fitWidth,
-                      )
-                  ),
+                      )),
                   Positioned(
-                    top: 10,
-                    left: 10,
-                    child: GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Icon(
-                          Icons.arrow_circle_left,color: Colors.white,
-                          size: 35,
-                        ))
-                  )
+                      top: 10,
+                      left: 10,
+                      child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: Colors.black,
+                            child: Icon(
+                              Icons.arrow_circle_left,
+                              color: Colors.white,
+                              size: 35,
+                            ),
+                          )))
                 ],
               ),
-              postContent(widget.content)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: postContent(widget.content),
+              )
             ],
           ),
         ),

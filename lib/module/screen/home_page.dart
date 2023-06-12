@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
                         radius: 15,
                         backgroundColor: kHomeBgColor,
                         backgroundImage: AssetImage(
-                          "assets/icons/mutarek.jpg",
+                          "assets/icons/searchIconPng.png",
                         ),
                       ),
                     ],
@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(24),
                                   image: DecorationImage(
-                                      image: CachedNetworkImageProvider(homeProvider.postModelList[0].yoast_head_json!.ogImage[0].url),
+                                      image: CachedNetworkImageProvider(homeProvider.postModelList[1].yoast_head_json!.ogImage[0].url),
                                       fit: BoxFit.cover)),
                             ),
                             Positioned(
@@ -131,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      homeProvider.postModelList[0].title!.rendered.toString(),
+                                      homeProvider.postModelList[1].title!.rendered.toString(),
                                       style: TextStyle(fontSize: 20, color: kLightColor, fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(height: 10),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wordpress_mobile/module/screen/add_post_page.dart';
 import 'package:wordpress_mobile/module/screen/home_page.dart';
 import 'package:wordpress_mobile/utils/app_colors.dart';
 
@@ -14,13 +15,11 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-
-  final List<Widget> _children =[
-    HotemotelPage(),
+  final List<Widget> _children = [
     HomePage(),
+    AddPostPage(),
     Container(),
-    Container(),
-
+    HotemotelPage(),
   ];
 
   void onTapTapped(int index) {

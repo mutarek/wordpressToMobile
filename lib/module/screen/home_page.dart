@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wordpress_mobile/data/provider/home_provider.dart';
@@ -22,7 +23,145 @@ class _HomePageState extends State<HomePage> {
     return Consumer<HomeProvider>(builder: (context, homeProvider, child) {
       return Scaffold(
         backgroundColor: kHomeBgColor,
-        body: SafeArea(
+        body:kIsWeb?
+            SafeArea(
+              child: Scaffold(
+                backgroundColor: kHomeBgColor,
+                appBar: AppBar(
+                  backgroundColor: kHomeBgColor,
+                  elevation: 0,
+                ),
+                drawer: Drawer(
+                  backgroundColor: kHomeBgColor,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CircleAvatar(
+                            radius: 15,
+                            backgroundColor: kHomeBgColor,
+                            backgroundImage: AssetImage(
+                              "assets/icons/mutarek.jpg",
+                            ),
+                          ),
+                          SizedBox(
+                            width: 18,
+                          ),
+                          Expanded(
+                              child: Text(
+                                "Hey User",
+                                style: TextStyle(fontSize: 15.0, color: Colors.white),
+                              )),
+                        ],
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          children: List.generate(
+                              homeProvider.blogTypes.length,
+                                  (index) => GestureDetector(
+                                onTap: () {
+                                  homeProvider.updateCurrentIndex(index);
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(right: 24.0),
+                                  child: Column(
+                                    children: [
+                                      Chip(
+                                        backgroundColor: homeProvider.selectedIndex == index ? Colors.green : Colors.white,
+                                        label: Text(
+                                          homeProvider.blogTypes[index],
+                                          style: TextStyle(
+                                              fontSize: 15.0,
+                                              fontWeight: homeProvider.selectedIndex == index ? FontWeight.bold : FontWeight.normal,
+                                              color: homeProvider.selectedIndex == index ? kLightColor : Colors.black),
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(top: 8.0),
+                                        height: 4.0,
+                                        width: 4.0,
+                                        color: homeProvider.selectedIndex == index ? kLightColor : kHomeBgColor,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              )),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                body: Padding(
+                  padding: const EdgeInsets.only(top: 16,bottom: 8,left: 16,right: 16),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 22,
+                      ),
+                      Text.rich(TextSpan(children: [
+                        TextSpan(text: "Trending", style: TextStyle(fontSize: 26, color: kLightColor)),
+                        TextSpan(text: " "),
+                        TextSpan(text: "Blogs", style: TextStyle(fontSize: 26, color: kLightColor, fontWeight: FontWeight.bold)),
+                      ])),
+                      SizedBox(height: 22.0),
+                      homeProvider.isLoading?
+                          Expanded(
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ):Expanded(
+                        child: GridView.builder(
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 8,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10
+                          ),
+                          itemCount: homeProvider.categoryList.length,
+                          itemBuilder: (_,index){
+                            var data = homeProvider.categoryList[index];
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (builder) => ArticlePage(data.id)));
+                              },
+                              child: Container(
+                                height: 162,
+                                width: 152.0,
+                                margin: EdgeInsets.only(right: 22.0),
+                                decoration: BoxDecoration(color: kCatColor.withOpacity(0.04), borderRadius: BorderRadius.circular(18.0)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 16, bottom: 24),
+                                      child: Image.asset(
+                                        "assets/icons/branch.png",
+                                        color: kLightColor,
+                                        height: 32,
+                                        width: 32,
+                                      ),
+                                    ),
+                                    Text(data.name.toString(),
+                                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: kLightColor)),
+                                    SizedBox(height: 8),
+                                    Text("${data.count} Articles",
+                                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: kLightColor.withOpacity(0.5)))
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ):
+          SafeArea(
           child: SingleChildScrollView(
             child: Container(
               padding: EdgeInsets.only(top: 32.0, bottom: 0, left: 24, right: 24),
@@ -229,7 +368,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-        ),
+        )
       );
     });
   }
